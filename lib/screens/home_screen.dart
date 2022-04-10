@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/asd.dart';
 import 'package:flutter_application_1/screens/qr_screen.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -80,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                           },
                         ),
+                        const SizedBox(height: 50),
                         ElevatedButton(
                           onPressed: () => _launchURL(_textcontroller.text),
                           child: const Text('Launch URL'),
