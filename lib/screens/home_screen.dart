@@ -37,59 +37,63 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Qr Code Readaer'),
+          title: const Text('Qr Code Scanner'),
         ),
         body: Container(
-          padding: const EdgeInsets.all(16),
-          child: Obx(
-            (() => Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: _textcontroller.text.isEmpty
-                          ? () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => QrCodeScanner(),
-                                ),
-                              )
-                                  .then((_) => setState(() {
-                                        updateText();
-                                      }))
-                                  .then(
-                                      (_) => _launchURL(_textcontroller.text));
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: _textcontroller.text.isEmpty
+                      ? () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const QrCodeScanner(),
+                            ),
+                          )
+                              .then((_) => setState(() {
+                                    updateText();
+                                  }))
+                              .then((_) {
+                            if (_textcontroller.text.isURL) {
+                              _launchURL(_textcontroller.text);
                             }
-                          : () {
-                              _textcontroller.clear();
-                              setState(() {});
-                            },
-                      child: _textcontroller.text.isEmpty
-                          ? const Text('Press to Scan')
-                          : const Text('Clear'),
+                          });
+                        }
+                      : () {
+                          _textcontroller.clear();
+                          setState(() {});
+                        },
+                  child: _textcontroller.text.isEmpty
+                      ? const Text('Press to Scan')
+                      : const Text('Clear'),
+                ),
+                Column(
+                  children: [
+                    // Text(_controller.res.string),
+                    TextField(
+                      controller: _textcontroller,
+                      onChanged: (val) {
+                        setState(() {
+                          val = _textcontroller.text;
+                        });
+                      },
                     ),
-                    Column(
-                      children: [
-                        Text(_controller.res.string),
-                        TextField(
-                          controller: _textcontroller,
-                          onChanged: (val) {
-                            setState(() {
-                              val = _textcontroller.text;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 50),
-                        ElevatedButton(
-                          onPressed: () => _launchURL(_textcontroller.text),
-                          child: const Text('Launch URL'),
-                        ),
-                      ],
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_textcontroller.text.isURL) {
+                          _launchURL(_textcontroller.text);
+                        }
+                      },
+                      child: const Text('Launch URL'),
                     ),
                   ],
-                )),
-          ),
-        ),
+                ),
+              ],
+            )),
       ),
     );
   }

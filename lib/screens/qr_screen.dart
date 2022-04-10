@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'controller.dart';
 
 class QrCodeScanner extends StatefulWidget {
+  const QrCodeScanner({Key? key}) : super(key: key);
+
   @override
   State<QrCodeScanner> createState() => _QrCodeScannerState();
 }
@@ -48,7 +49,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
               child: (result != null)
                   ? Text(
                       'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  : Text('Scan a code'),
+                  : const Text('Scan a code'),
             ),
           )
         ],
